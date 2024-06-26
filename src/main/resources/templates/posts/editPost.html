@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Bootstrap 5 CDN Link -->
+    <link rel="stylesheet" href="/css/bootstrap-min.css">
+    <!-- Summernote CSS - CDN Link -->
+    <link href="/css/summernote-css/summernote.min.css" rel="stylesheet">
+    <link href="/css/summernote-css/summernote-lite.min.css" rel="stylesheet">
+    <!-- //Summernote CSS - CDN Link -->
+
+    <title>Edit Post</title>
+    <link rel="icon" href="/site-images/icons/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="/css/mycss.css">
+</head>
+<body>
+<nav class="navbar fixed-top navbar-light bg-light navbar-border-bottom">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+        <div>
+            <a class="link-underline-secondary navbar-brand mb-0 h1 text-center" href="/">Home</a>
+            <a class="link-secondary navbar-brand mb-0 h1 text-center" href="/itemList">Items</a>
+            <a class="link-secondary navbar-brand mb-0 h1 text-center" href="/posts">How To</a>
+        </div>
+        <div>
+            <span class="navbar-text me-3 h6" th:text="${username}"></span>
+            <a class="btn btn-outline-danger" href="/logout">Logout</a>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 mx-auto rounded border mt-3 pb-3 bg-white">
+            <h4 class="text-center mb-3 mt-0">New Post</h4>
+            <form class="create_form" method="post" enctype="multipart/form-data" th:object="${postDto}">
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Title</label>
+                    <p th:if="${#fields.hasErrors('title')}" th:errorclass="text-danger"
+                       th:errors="${postDto.title}"></p>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" th:field="${postDto.title}"
+                           placeholder="Post Title">
+                </div>
+                <div class="mb-3">
+                    <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="text-danger"></p>
+                    <textarea class="content form-control" id="summernote" rows="15" th:field="*{content}"></textarea>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-sm-4 d-grid">
+                        <button type="submit" class="btn btn-secondary w-75">Save</button>
+                    </div>
+                    <div class="col-sm-4 d-grid">
+                        <a class="btn btn-outline-secondary w-75" href="/posts" role="button">Cancel</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- jQuery -->
+
+<script src="/javascript/jquery-3-7.js"></script>
+<script src="/javascript/bootstrap-bundle-min.js"></script>
+
+<!-- Summernote JS - CDN Link -->
+<script src="/javascript/summernote-js/summernote-lite.min.js"></script>
+<script src="/javascript/summernote-js/mySummernote.js"></script>
+</body>
+</html>

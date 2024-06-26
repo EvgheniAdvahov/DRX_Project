@@ -1,0 +1,69 @@
+<!doctype html>
+<!--for thymeleaf and sec:authorize-->
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IT Warehouse</title>
+    <link rel="icon" href="/site-images/icons/favicon.png" type="image/x-icon">
+    <link href="/css/bootstrap-min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/mycss.css">
+    <link rel="stylesheet" href="/css/animation.css">
+</head>
+<body class="body-height">
+<nav class="navbar fixed-top navbar-light bg-light navbar-border-bottom">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+        <div class="my_nav">
+            <a class="link-underline-secondary navbar-brand mb-0 h1 text-center " href="/">Home</a>
+            <a class="link-secondary navbar-brand mb-0 h1 text-center " href="/itemList">Warehouse</a>
+            <a class="link-secondary navbar-brand mb-0 h1 text-center" href="/posts">Notes</a>
+            <a sec:authorize="hasAuthority('admin')" class="link-secondary navbar-brand mb-0 h1 text-center"
+               href="/userList">Users</a>
+        </div>
+        <div>
+            <span class="navbar-text me-3 h6" th:text="${username}"></span>
+            <a class="btn btn-outline-danger" href="/logout">Logout</a>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div th:if="${quote.q != null}">
+        <span th:utext="|&ldquo;${quote.q}&rdquo;&mdash;|"></span><br>
+        <span th:utext="${quote.a}"></span>
+    </div>
+    <div th:if="${quote.q == null}">
+        <span>No quote available.</span>
+    </div>
+    <div th:if="${error != null}">
+        <span th:text="${error}"></span>
+    </div>
+
+    <div class="d-flex justify-content-evenly">
+        <a class="icon-button" href="/itemList">
+            <svg class="svg_main" fill="#777777" height="140px" width="140px" version="1.1" id="Capa_1"
+                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 297 297"
+                 xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier"> <g> <path
+                        d="M291.219,78.753L153.176,9.732c-2.943-1.473-6.409-1.473-9.353,0L5.781,78.753C2.238,80.525,0,84.145,0,88.107v189.808 c0,5.775,4.682,10.458,10.458,10.458h34.511c5.775,0,10.458-4.682,10.458-10.458V115.82h186.148v162.095 c0,5.775,4.682,10.458,10.458,10.458h34.511c5.775,0,10.458-4.682,10.458-10.458V88.107C297,84.145,294.762,80.525,291.219,78.753z M276.085,267.457h-13.595V105.362c0-5.775-4.682-10.458-10.458-10.458H44.968c-5.775,0-10.458,4.682-10.458,10.458v162.095H20.915 V94.57L148.5,30.778L276.085,94.57V267.457z"></path>
+                    <path d="M217.521,132.552H148.5c-4.043,0-7.32,3.277-7.32,7.32v61.701H79.479c-4.043,0-7.32,3.277-7.32,7.32v69.021 c0,4.043,3.277,7.32,7.32,7.32h138.042c4.043,0,7.32-3.277,7.32-7.32V139.873C224.842,135.829,221.564,132.552,217.521,132.552z M155.82,226.568l16.837,16.837l-16.837,16.837V226.568z M141.18,260.241l-16.837-16.837l16.837-16.837V260.241z M166.174,216.214 h33.673l-16.837,16.837L166.174,216.214z M166.174,201.573l16.837-16.837l16.837,16.837H166.174z M210.201,191.22l-16.836-16.837 l16.836-16.837V191.22z M183.011,164.03l-16.837-16.837h33.673L183.011,164.03z M172.657,174.383L155.82,191.22v-33.673 L172.657,174.383z M113.989,233.051l-16.837-16.837h33.673L113.989,233.051z M103.636,243.404l-16.837,16.837v-33.673 L103.636,243.404z M113.989,253.758l16.837,16.837H97.153L113.989,253.758z M183.01,253.758l16.837,16.837h-33.673L183.01,253.758z M193.364,243.404l16.837-16.837v33.673L193.364,243.404z"></path> </g> </g></svg>
+        </a>
+        <a class="icon-button secondary" href="/posts">
+            <svg class="svg_main" viewBox="0 0 24 24" fill="#777777" height="140px" width="140px"
+                 xmlns="http://www.w3.org/2000/svg">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                          d="M1 5C1 3.34315 2.34315 2 4 2H8.43845C9.81505 2 11.015 2.93689 11.3489 4.27239L11.7808 6H13.5H20C21.6569 6 23 7.34315 23 9V11C23 11.5523 22.5523 12 22 12C21.4477 12 21 11.5523 21 11V9C21 8.44772 20.5523 8 20 8H13.5H11.7808H4C3.44772 8 3 8.44772 3 9V10V19C3 19.5523 3.44772 20 4 20H9C9.55228 20 10 20.4477 10 21C10 21.5523 9.55228 22 9 22H4C2.34315 22 1 20.6569 1 19V10V9V5ZM3 6.17071C3.31278 6.06015 3.64936 6 4 6H9.71922L9.40859 4.75746C9.2973 4.3123 8.89732 4 8.43845 4H4C3.44772 4 3 4.44772 3 5V6.17071ZM20.1716 18.7574C20.6951 17.967 21 17.0191 21 16C21 13.2386 18.7614 11 16 11C13.2386 11 11 13.2386 11 16C11 18.7614 13.2386 21 16 21C17.0191 21 17.967 20.6951 18.7574 20.1716L21.2929 22.7071C21.6834 23.0976 22.3166 23.0976 22.7071 22.7071C23.0976 22.3166 23.0976 21.6834 22.7071 21.2929L20.1716 18.7574ZM13 16C13 14.3431 14.3431 13 16 13C17.6569 13 19 14.3431 19 16C19 17.6569 17.6569 19 16 19C14.3431 19 13 17.6569 13 16Z"></path>
+                </g>
+            </svg>
+        </a>
+    </div>
+
+</div>
+<script src="/javascript/bootstrap-bundle-min.js"></script>
+</body>
+</html>

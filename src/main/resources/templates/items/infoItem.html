@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Item info</title>
+    <link rel="icon" href="/site-images/icons/favicon.png" type="image/x-icon" >
+    <link href="/css/bootstrap-min.css" rel="stylesheet">
+    <link href="/css/datatables/datatables.min.css" rel="stylesheet">
+    <link href="/css/mycss.css" rel="stylesheet">
+    <script defer src="/javascript/jquery-3-7.js"></script>
+    <script defer src="/javascript/bootstrap-bundle-min.js"></script>
+    <script defer src="/javascript/datatables/datatables.min.js"></script>
+    <script defer src="/javascript/datatables/pdfmake.min.js"></script>
+    <script defer src="/javascript/datatables/vfs_fonts.js"></script>
+    <script defer src="/javascript/datatables/myScript.js"></script>
+</head>
+<body>
+<nav class="navbar fixed-top navbar-light bg-light navbar-border-bottom">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+        <div class="my_nav">
+            <a class="link-underline-secondary navbar-brand mb-0 h1 text-center " href="/">Home</a>
+            <a class="link-secondary navbar-brand mb-0 h1 text-center " href="/itemList">Warehouse</a>
+            <a class="link-secondary navbar-brand mb-0 h1 text-center" href="/posts">Notes</a>
+            <a sec:authorize="hasAuthority('admin')" class="link-secondary navbar-brand mb-0 h1 text-center" href="/userList">Users</a>
+        </div>
+        <div>
+            <span class="navbar-text me-3 h6" th:text="${username}"></span>
+            <a class="btn btn-outline-danger" href="/logout">Logout</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto rounded border p-3 m-3 bg-white">
+            <h2 class="text-center" th:text="${item.name}"></h2>
+            <form method="post" enctype="multipart/form-data" th:object="${item}">
+
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Status</label>
+                    <div class="col-sm-8">
+                        <label class="form-control" th:text="${item.status}"></label>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Model</label>
+                    <div class="col-sm-8">
+                        <label class="form-control info-placeholder-empty-label" th:text="${item.model}"></label>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Manufacturer</label>
+                    <div class="col-sm-8">
+                        <label class="form-control" th:text="${item.manufacturer}"></label>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Category</label>
+                    <div class="col-sm-8">
+                        <label class="form-control" th:text="${item.category}"></label>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Department</label>
+                    <div class="col-sm-8">
+                        <label class="form-control" th:text="${item.department}"></label>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Serial Number</label>
+                    <div class="col-sm-8">
+                        <label class="form-control" th:text="${item.serialNumber}"></label>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Product Order</label>
+                    <div class="col-sm-8">
+                        <label class="form-control info-placeholder-empty-label"
+                               th:text="${item.productOrder}"></label>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Inventory Number</label>
+                    <div class="col-sm-8">
+                        <label class="form-control info-placeholder-empty-label"
+                               th:text="${item.inventoryNumber}"></label>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Description</label>
+                    <div class="col-sm-8">
+                        <textarea class="form-control" rows="3" th:text="${item.description}" readonly></textarea>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="offset-sm-4 col-sm-8">
+                        <img th:src="@{'/images/' + ${item.imageFileName}}" alt="..." width="150">
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 text-center"> <!-- Измените размер колонки на нужный -->
+                            <a class="btn btn-outline-secondary btn-lg" href="/itemList" role="button">Back to Items</a>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+            <div class="row justify-content-end">
+                <div class="col-auto">
+                    <div class="my-buttons-info"></div>
+                </div>
+            </div>
+            <div class="data_table">
+                <table id="infoTable" class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Created</th>
+                        <th>Description</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="log : ${itemLog}">
+                        <td>
+                            <div class="table-created-column" th:text="${log.createdAt}">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="overflow-auto">
+                                <div class="log-table-created-at-max-height" th:text="${log.description}">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

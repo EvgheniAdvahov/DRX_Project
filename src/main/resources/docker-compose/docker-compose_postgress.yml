@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  SpringPostgres:
+    image: postgres
+    container_name: SpringPostgres
+    environment:
+      POSTGRES_USER: evad
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "5432:5432"
+    volumes:
+      - "C:/Users/evghe/Documents/docker data/data/pgSpring:/var/lib/postgresql/data"

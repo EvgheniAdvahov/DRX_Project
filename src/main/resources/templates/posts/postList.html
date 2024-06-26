@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="icon" href="/site-images/icons/favicon.png" type="image/x-icon">
+    <link href="/css/bootstrap-min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/mycss.css">
+</head>
+<body>
+<nav class="navbar fixed-top navbar-light bg-light navbar-border-bottom">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+        <div class="my_nav">
+            <a class="link-underline-secondary navbar-brand mb-0 h1 text-center " href="/">Home</a>
+            <a class="link-secondary navbar-brand mb-0 h1 text-center " href="/itemList">Warehouse</a>
+            <a class="link-secondary navbar-brand mb-0 h1 text-center" href="/posts">Notes</a>
+            <a sec:authorize="hasAuthority('admin')" class="link-secondary navbar-brand mb-0 h1 text-center"
+               href="/userList">Users</a>
+        </div>
+        <div>
+            <span class="navbar-text me-3 h6" th:text="${username}"></span>
+            <a class="btn btn-outline-danger" href="/logout">Logout</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container py-4">
+    <a class="btn btn-primary rounded-1 btn-block" id="insertRow" href="/posts/createPost">New Post</a>
+    <div class="row row-cols-1 row-cols-md-3">
+        <div th:each="post : ${posts}" class="col-md-4">
+            <div class="card mb-2">
+                <h5 class="card-title text-center pt-1 pb-1 mb-0" th:text="${post.getTitle()}" style="background-color: #D7D7D7"></h5>
+                <div class="card-body pt-0" style="height: 250px; overflow: auto;">
+                    <div style="overflow: hidden;">
+                        <p class="card-text" th:utext="${post.getContent()}"></p>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-top-0 d-flex justify-content-end">
+                    <a class="btn btn-primary rounded-1 btn-block" th:href="@{/posts/editPost(id=${post.id})}">Edit</a>
+                    <a class="btn btn-outline-danger rounded-1 btn-block" th:href="@{/posts/deletePost(id=${post.id})}">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="/javascript/bootstrap-bundle-min.js"></script>
+</body>
+</html>

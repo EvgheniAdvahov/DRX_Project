@@ -1,0 +1,73 @@
+.navbar-border-bottom {
+    border-bottom: 2px solid gray; /* Добавляем серую линию снизу */
+}
+
+
+body {
+    padding-top: 50px;
+    background-image: url("../site-images/background/city-sky.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+.body-height {
+    height: 100vh;
+}
+
+.data_table {
+    background: #fff;
+    padding: 10px;
+    box-shadow: 1px 3px 5px #aaa;
+    border-radius: 5px;
+}
+
+.container-top-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.table-description-column {
+    width: 100px;
+    height: 80px;
+}
+
+.table-model-column {
+    width: 100px;
+}
+
+.table-created-column {
+    width: 85px;
+}
+
+.btn-main-xl {
+    font-size: 30px;
+    border-radius: 10px;
+}
+
+.info-placeholder-empty-label {
+    height: 35px;
+}
+
+.log-table-created-at-max-height {
+    max-height: 110px;
+}
+
+/*Quote and code for summernote editor*/
+.note-editor .note-editable blockquote {
+    border-left: 5px solid #ccc;
+    margin: 10px 0;
+    padding-left: 10px;
+    color: #666;
+}
+
+.note-editor .note-editable pre {
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    padding: 10px;
+    white-space: pre-wrap;
+}
+
+
+

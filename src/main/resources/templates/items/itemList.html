@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/site-images/icons/favicon.png" type="image/x-icon" >
+    <link href="/css/mycss.css" rel="stylesheet">
+    <link href="/css/bootstrap-min.css" rel="stylesheet">
+    <link href="/css/datatables/datatables.min.css" rel="stylesheet">
+    <script defer src="/javascript/jquery-3-7.js"></script>
+    <script defer src="/javascript/bootstrap-bundle-min.js"></script>
+    <script defer src="/javascript/datatables/datatables.min.js"></script>
+    <script defer src="/javascript/datatables/vfs_fonts.js"></script>
+    <script defer src="/javascript/datatables/myScript.js"></script>
+
+    <title>IT Warehouse</title>
+</head>
+<body>
+
+<nav class="navbar fixed-top navbar-light bg-light navbar-border-bottom">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+        <div class="my_nav">
+            <a class="link-underline-secondary navbar-brand mb-0 h1 text-center " href="/">Home</a>
+            <a class="link-secondary navbar-brand mb-0 h1 text-center " href="/itemList">Warehouse</a>
+            <a class="link-secondary navbar-brand mb-0 h1 text-center" href="/posts">Notes</a>
+            <a sec:authorize="hasAuthority('admin')" class="link-secondary navbar-brand mb-0 h1 text-center" href="/userList">Users</a>
+        </div>
+        <div>
+            <span class="navbar-text me-3 h6" th:text="${username}"></span>
+            <a class="btn btn-outline-danger" href="/logout">Logout</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div>
+        <h1 class="text-center my-0">Warehouse</h1>
+        <div class="container-top-buttons">
+            <a class="btn btn-secondary" href="/items/create">Add Item</a>
+            <div class="my-buttons"></div>
+        </div>
+    </div>
+    <div class="data_table">
+        <table id="example" class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Manufacturer</th>
+                <th>Category</th>
+                <th>Department</th>
+                <th>Status✎</th>
+                <th>Model</th>
+                <th>Image</th>
+                <th>Serial_№</th>
+                <th>Order_№</th>
+                <th>Inventory_№</th>
+                <th>Action</th>
+                <th>Description</th>
+                <th>Modified</th>
+                <th>Created</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${items}">
+                <td>
+                    <a class="text-decoration-none" th:href="@{/items/info(id=${item.id})}" th:text="${item.name}"></a>
+                </td>
+                <td th:text="${item.getManufacturer}"></td>
+                <td th:text="${item.category}"></td>
+                <td th:text="${item.getDepartment}"></td>
+                <td th:text="${item.status}"></td>
+                <td>
+                    <div class="table-model-column">
+                        <div th:text="${item.model}"></div>
+                    </div>
+                </td>
+                <td>
+                    <img th:src="@{'/images/' + ${item.imageFileName}}"
+                         alt="..." width="100">
+                </td>
+                <td th:text="${item.serialNumber}"></td>
+                <td th:text="${item.productOrder}"></td>
+                <td th:text="${item.inventoryNumber}"></td>
+                <td>
+                    <a th:href="@{/items/edit(id=${item.id})}">
+                        <img src="/site-images/icons/edit.svg" alt="Edit" width="32" height="32">
+                    </a>
+                    <a th:href="@{/items/delete(id=${item.id})}"
+                       onclick="return confirm('Are you sure?')">
+                        <img src="/site-images/icons/delete.svg" alt="Delete" width="32" height="32">
+                    </a>
+                </td>
+                <td>
+                    <div class="overflow-auto">
+                        <div class="table-description-column" th:text="${item.description}">
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="table-created-column" th:text="${item.modifiedAt}">
+                    </div>
+                </td>
+                <td>
+                    <div class="table-created-column" th:text="${item.createdAt}">
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot class="text-primary">
+            <tr>
+                <th>Name</th>
+                <th>Manufacturer</th>
+                <th>Category</th>
+                <th>Department</th>
+                <th>Status</th>
+                <th>Model</th>
+                <th>Image</th>
+                <th>Serial_№</th>
+                <th>Order_№</th>
+                <th>Inventory_№</th>
+                <th>Action</th>
+                <th>Description</th>
+                <th>Modified</th>
+                <th>Created</th>
+            </tfoot>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>

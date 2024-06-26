@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: drxProject
+  datasource:
+    url: jdbc:mysql://localhost:3305/sqlFinalProject
+    username: user
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: mysql
+    show-sql: true
+  web:
+    resources:
+      static-locations: classpath:/static/,file:src/main/resources/static/
+#    for actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: metrics, prometheus, health
+  endpoint:
+    health:
+      show-details: always
+#    configuration-processor links for params
+param:
+  quote_url: https://zenquotes.io/api/random/
+  upload_dir_img: src/main/resources/static/images/

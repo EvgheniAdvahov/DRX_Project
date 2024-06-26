@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>User list</title>
+    <link rel="icon" href="/site-images/icons/favicon.png" type="image/x-icon">
+    <link href="/css/bootstrap-min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/mycss.css">
+    <link rel="stylesheet" href="/css/animation.css">
+</head>
+<body class="body-height">
+<nav class="navbar fixed-top navbar-light bg-light navbar-border-bottom">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+        <div class="my_nav">
+            <a class="link-underline-secondary navbar-brand mb-0 h1 text-center " href="/">Home</a>
+            <a class="link-secondary navbar-brand mb-0 h1 text-center " href="/itemList">Warehouse</a>
+            <a class="link-secondary navbar-brand mb-0 h1 text-center" href="/posts">Notes</a>
+            <a sec:authorize="hasAuthority('admin')" class="link-secondary navbar-brand mb-0 h1 text-center" href="/userList">Users</a>
+        </div>
+        <div>
+            <span class="navbar-text me-3 h6" th:text="${username}"></span>
+            <a class="btn btn-outline-danger" href="/logout">Logout</a>
+        </div>
+    </div>
+</nav>
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-12 mx-auto">
+            <div class="card rounded-0 border-0 shadow">
+                <div class="card-body p-4">
+                    <div th:switch="${users}">
+                        <h2 th:case="null">No users found!</h2>
+                        <div th:case="*">
+                            <h1 class="display-6 text-center">Users</h1>
+                            <a class="btn btn-primary rounded-0 btn-block" id="insertRow" href="/userCreate">Create
+                                user</a>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Id</th>
+                                        <th scope="col">username</th>
+                                        <th scope="col">password</th>
+                                        <th scope="col">roles</th>
+                                        <th scope="col">Full name</th>
+                                        <th scope="col">Actions</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="user : ${users}">
+                                        <td th:text="${user.id}"></td>
+                                        <td th:text="${user.username}"></td>
+                                        <td th:text="${user.password}"></td>
+                                        <td th:text="${user.getStringRoles()}"></td>
+                                        <td th:text="${user.fullName}"></td>
+                                        <td><a class="btn btn-success"
+                                               th:href="@{userUpdate/{id}(id=${user.id})}">Edit</a>
+                                            <a class="btn btn-danger" th:href="@{userDelete/{id}(id=${user.id})}">Delete</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<script src="/javascript/bootstrap-bundle-min.js"></script>
+</body>
+</html>

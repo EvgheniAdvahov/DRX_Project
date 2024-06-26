@@ -1,0 +1,5 @@
+grant privileges to user!
+1. docker exec -it <container_name> bash
+2. mysql -u root -p
+3. root password
+4. GRANT ALL PRIVILEGES ON myfinalproject.* TO 'user'@'%';
