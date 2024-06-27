@@ -92,21 +92,11 @@ public class ItemController {
     public String createItem(@Valid @ModelAttribute ItemDto itemDto,
                              BindingResult result,
                              Principal principal) {
-        if (itemDto.getImageFile().isEmpty()) {
-            result.addError(
-                    new FieldError("itemDto", "imageFile", "The image file is required"));
-        }
         if (result.hasErrors()) {
             return "items/createItem";
         }
-        String storageFileName = saveImage(itemDto.getImageFile());
-        if (storageFileName == null) {
-            result.addError(
-                    new FieldError("itemDto", "imageFile", "Error saving image file"));
-            return "items/createItem";
-        }
 
-        Item item = convertToItem(itemDto, storageFileName);
+        Item item = convertToItem(itemDto);
         String description = descriptionOnSave(principal, item);
         itemService.saveToDb(item, description);
         saveLog(principal, item, description);
@@ -161,16 +151,6 @@ public class ItemController {
         if (result.hasErrors()) {
             return "items/editItem";
         }
-        if (!itemDto.getImageFile().isEmpty()) {
-            deleteOldImage(item.getImageFileName());
-            String storageFileName = saveImage(itemDto.getImageFile());
-            if (storageFileName == null) {
-                result.addError(
-                        new FieldError("itemDto", "imageFile", "Error saving image file"));
-                return "items/editItem";
-            }
-            item.setImageFileName(storageFileName);
-        }
         String description = descriptionOnEdit(principal, item, itemDto);
         convertToItem(item, itemDto);
         itemService.saveToDb(item, description);
@@ -184,46 +164,14 @@ public class ItemController {
     @GetMapping("/items/delete")
     public String deleteProduct(@RequestParam int id, Principal principal) {
         Optional<Item> optionalItem = itemService.getById(id);
-
         if (optionalItem.isPresent()) {
             Item item = optionalItem.get();
-            deleteOldImage(item.getImageFileName());
             itemService.deleteById(id, descriptionOnDelete(principal, item));
             itemsCounterRemoved.increment();
         }
         return "redirect:/itemList";
     }
 
-    //method for deleting old image
-    private void deleteOldImage(String imageFileName) {
-        Path oldImagePath = Paths.get( param.getUPLOAD_DIR_IMG() + imageFileName);
-
-        try {
-            Files.deleteIfExists(oldImagePath);
-        } catch (IOException ex) {
-            System.out.println("Exception: " + ex.getMessage());
-        }
-    }
-
-    //method for saving image
-    private String saveImage(MultipartFile image) {
-        String formattedDate = dateTime();
-        String storageFileName = formattedDate + "_" + image.getOriginalFilename();
-        try {
-            Path uploadPath = Paths.get(param.getUPLOAD_DIR_IMG());
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
-            try (InputStream inputStream = image.getInputStream()) {
-                Files.copy(inputStream, Paths.get(param.getUPLOAD_DIR_IMG() + storageFileName)
-                        , StandardCopyOption.REPLACE_EXISTING);
-            }
-            return storageFileName;
-        } catch (IOException ex) {
-            System.out.println("Exception: " + ex.getMessage());
-            return null;
-        }
-    }
 
     //Saving object(Mylog) to database
     private void saveLog(Principal principal, Item item, String description) {
@@ -317,7 +265,7 @@ public class ItemController {
     }
 
     //convert ItemDto to Item (get data from ItemDto)
-    private Item convertToItem(ItemDto itemDto, String storageFileName) {
+    private Item convertToItem(ItemDto itemDto) {
         Item item = new Item();
         item.setName(itemDto.getName());
         item.setStatus(itemDto.getStatus());
@@ -329,7 +277,6 @@ public class ItemController {
         item.setProductOrder(itemDto.getProductOrder());
         item.setInventoryNumber(itemDto.getInventoryNumber());
         item.setDescription(itemDto.getDescription());
-        item.setImageFileName(storageFileName);
         item.setCreatedAt(dateTime());
         item.setModifiedAt(dateTime());
         return item;

@@ -52,7 +52,6 @@
                 <th>Department</th>
                 <th>Status✎</th>
                 <th>Model</th>
-                <th>Image</th>
                 <th>Serial_№</th>
                 <th>Order_№</th>
                 <th>Inventory_№</th>
@@ -75,10 +74,6 @@
                     <div class="table-model-column">
                         <div th:text="${item.model}"></div>
                     </div>
-                </td>
-                <td>
-                    <img th:src="@{'/images/' + ${item.imageFileName}}"
-                         alt="..." width="100">
                 </td>
                 <td th:text="${item.serialNumber}"></td>
                 <td th:text="${item.productOrder}"></td>
@@ -116,7 +111,6 @@
                 <th>Department</th>
                 <th>Status</th>
                 <th>Model</th>
-                <th>Image</th>
                 <th>Serial_№</th>
                 <th>Order_№</th>
                 <th>Inventory_№</th>
